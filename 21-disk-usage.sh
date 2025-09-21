@@ -2,7 +2,8 @@
 
 DISK_USAGE=$(df -hT | grep -v Filesystem)
 DISK_THRESHOLD=1 # IN PROJECT It will be 75
-MSG=
+MSG=""
+IP=$(curl http://169.254.169.254/latest/meta-data/public-ipv4)
 
 while IFS= read line
 do
@@ -14,4 +15,6 @@ do
     fi    
 done <<< $DISK_USAGE
 
-echo  -e $MSG
+ #echo  -e $MSG
+
+ sh mail.sh "DevOps Team" "High Disk Usage" $IP $MSG "dgulladurthi.gmail.com" "ALERT_High Disk Usage"
