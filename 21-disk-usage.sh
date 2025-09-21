@@ -2,11 +2,14 @@
 
 DISK_USAGE=$(df -hT | grep -v Filesystem)
 DISK_THRESHOLD=1 # IN PROJECT It will be 75
-
+MSG=
 
 while IFS= read line
 do
    USAGE=$(echo $line | awk '{print $6F}' | cut -d "%" -f1)
    PARTITION=$(echo $line | awk '{print $7F}')
-   echo "$PARTITION: $USAGE"
+   if [ $USAGE -ge $DISK_THRESHOLD ]
+   then
+       MSG="High Disk usage on $PARTITION: $USAGE"
+    fi    
 done <<< $DISK_USAGE
